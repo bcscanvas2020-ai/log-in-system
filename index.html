@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <title>Secure Login</title>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-
 <style>
 body {
   margin: 0;
@@ -17,88 +13,119 @@ body {
   align-items: center;
   font-family: Arial;
 
-  background: linear-gradient(135deg, #1e90ff, #00c6ff);
+  background: linear-gradient(135deg, #00c6ff, #0072ff, #1e3c72);
 }
 
-/* Card */
 .login-box {
   width: 320px;
-  padding: 30px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
+  padding: 32px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+
   text-align: center;
   color: white;
-  position: relative;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
-/* LOGO (Replace here 🔥) */
+/* LOGO */
 .logo {
-  width: 90px;
-  height: 90px;
-  background: white;
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 12px auto;
+
   border-radius: 50%;
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
+  background: rgba(255,255,255,0.12);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.25);
+
+  box-shadow: 0 0 10px rgba(0, 198, 255, 0.6),
+              0 0 25px rgba(0, 114, 255, 0.4);
+
+  animation: glowPulse 2s infinite ease-in-out;
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 8px rgba(0, 198, 255, 0.4),
+                0 0 20px rgba(0, 114, 255, 0.3);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 18px rgba(0, 198, 255, 0.9),
+                0 0 35px rgba(0, 114, 255, 0.7);
+    transform: scale(1.05);
+  }
+
+  100% {
+    box-shadow: 0 0 8px rgba(0, 198, 255, 0.4),
+                0 0 20px rgba(0, 114, 255, 0.3);
+    transform: scale(1);
+  }
 }
 
 .logo img {
-  width: 90px;
-}
-
-/* Title */
-h2 {
-  margin-top: 50px;
-}
-
-/* Input */
-.input-box {
-  margin: 20px 0;
-}
-
-.input-box input {
   width: 100%;
-  padding: 10px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-box h2 {
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+input {
+  width: 100%;
+  padding: 11px;
+  margin: 10px 0;
+
   border: none;
-  border-bottom: 1px solid white;
-  background: transparent;
-  color: white;
+  border-radius: 10px;
   outline: none;
+
+  background: rgba(255,255,255,0.15);
+  color: white;
 }
 
-/* Checkbox */
-.options {
-  font-size: 13px;
-  text-align: left;
+input::placeholder {
+  color: rgba(255,255,255,0.7);
 }
 
-/* Button */
 button {
   width: 100%;
-  padding: 12px;
-  margin-top: 15px;
+  padding: 11px;
+  margin-top: 8px;
+
   border: none;
-  border-radius: 8px;
-  background: #002b5c;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
   color: white;
+  font-weight: bold;
+
   cursor: pointer;
 }
 
-button:hover {
-  background: #001a3a;
-}
-
-/* Error */
 #error {
+  color: #ff6b6b;
   margin-top: 10px;
-  color: #ffdede;
+  font-size: 13px;
 }
 </style>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 </head>
 
@@ -106,26 +133,17 @@ button:hover {
 
 <div class="login-box">
 
-  <!-- 🔥 এখানে তোমার logo বসাও -->
+  <!-- 🖼️ LOGO (FIXED) -->
   <div class="logo">
-    <img src="Asset4.png">
+    <img src="./asset4.png" alt="Logo">
   </div>
 
   <h2>Login</h2>
 
-  <div class="input-box">
-    <input type="email" id="email" placeholder="Email">
-  </div>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
 
-  <div class="input-box">
-    <input type="password" id="password" placeholder="Password">
-  </div>
-
-  <div class="options">
-    <input type="checkbox"> Remember me
-  </div>
-
-  <button onclick="login()">LOGIN</button>
+  <button onclick="login()">Login</button>
 
   <p id="error"></p>
 
@@ -133,26 +151,26 @@ button:hover {
 
 <script>
 
-// 🔥 Firebase config বসাও এখানে
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID",
+  apiKey: "AIzaSyAtnz7uPNK06Kk9KLHQ7fRhpfRlGxtCVhw",
+  authDomain: "log-in-95713.firebaseapp.com",
+  projectId: "log-in-95713",
+  storageBucket: "log-in-95713.firebasestorage.app",
+  messagingSenderId: "953428489483",
+  appId: "1:953428489483:web:61d71af0979c6729631e0e"
 };
 
-// Init
 firebase.initializeApp(firebaseConfig);
 
-// Login function
 function login() {
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("password").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
-      window.location.href = "https://sites.google.com/view/khalids-gk-just-msq";
+      window.location.href = "https://sites.google.com/view/mcqkhalidsgk/home";
     })
-    .catch(error => {
+    .catch((error) => {
       document.getElementById("error").innerText = error.message;
     });
 }
